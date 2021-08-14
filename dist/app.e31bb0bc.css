@@ -1,11 +1,12 @@
 body {
   background-color: #eee;
-  font-family: 'Muli', sans-serif;
+  font-family: "Muli", sans-serif;
 }
 
-.inner-body{
+.inner-body {
   display: flex;
 }
+
 .contract, .existing-contracts {
   margin: 20px;
   width: 50%;
@@ -13,9 +14,9 @@ body {
   border: 1px solid #ddd;
   background-color: #fff;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-style:solid;
+  border-style: solid;
   border-color: cadetblue;
-  border-radius: 16px;  
+  border-radius: 16px;
 }
 
 h1 {
@@ -40,7 +41,7 @@ label {
   margin: 20px;
 }
 
-input[type="text"] {
+input[type=text] {
   padding: 6px;
   font-size: 18px;
 }
@@ -56,8 +57,8 @@ input[type="text"] {
   font-size: 14px;
   letter-spacing: 1px;
   cursor: pointer;
-  border-radius: 16px; 
-  border-color: rgb(37, 73, 75); 
+  border-radius: 16px;
+  border-color: #25494b;
 }
 
 .existing-contract ul {
@@ -85,16 +86,19 @@ input[type="text"] {
   text-align: center;
 }
 
-.deploy-button{
+.deploy-button {
   align-items: center;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  border-radius: 16px; 
-  border-color: cadetblue; 
+  border-radius: 16px;
+  border-color: cadetblue;
 }
 
 .deploy-button:hover {
-  background-color: cadetblue; /* Green */
+  background-color: cadetblue;
+  /* Green */
   color: white;
 }
+
+/*# sourceMappingURL=/app.e31bb0bc.css.map */

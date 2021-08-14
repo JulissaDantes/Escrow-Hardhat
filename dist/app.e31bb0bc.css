@@ -55,6 +55,15 @@ td {
   align-items: inherit;
 }
 
+footer {
+  position: relative;
+  left: 0;
+  bottom: 0;
+  background-color: #04AA6D;
+  text-align: center;
+  color: honeydew;
+}
+
 .button {
   background-color: cadetblue;
   color: white;

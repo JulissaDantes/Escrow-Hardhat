@@ -1,8 +1,13 @@
+require('dotenv').config();
 import {ethers} from 'ethers';
 
 const provider = new ethers.providers.Web3Provider(ethereum);
-
+const uri = DB_URI;
+const client = new MongoClient(uri);
 export default async function addContract(id, contract, arbiter, beneficiary, value) {
+  await client.connect();
+  const database = client.db('ApprovedContracts');
+  const contractsCollections = database.collection("contract");
   const buttonId = `approve-${id}`;
 
   const container = document.getElementById("container");
@@ -11,6 +16,9 @@ export default async function addContract(id, contract, arbiter, beneficiary, va
   contract.on('Approved', () => {
     document.getElementById(buttonId).className = "complete";
     document.getElementById(buttonId).innerText = "✓ It's been approved!";
+     // create a document to be inserted
+     const doc = { address: contract.address, arbiter: arbiter, beneficiary: beneficiary, value: value};
+     const result = await contractsCollections.insertOne(doc);
   });
 
   document.getElementById(buttonId).addEventListener("click", async () => {

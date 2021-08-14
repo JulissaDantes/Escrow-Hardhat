@@ -1,4 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
+require('dotenv').config();
 
 module.exports = {
   solidity: "0.7.5",
@@ -9,13 +10,13 @@ module.exports = {
       url: "HTTP://127.0.0.1:7545"
     },
     rinkeby: {
-      url:"https://rinkeby.infura.io/v3/433a74c66045425ba8fdf7f1cb23ffdb"
+      url: RINKEBY_URL
     },
     kovan: {
-      url:"https://kovan.infura.io/v3/433a74c66045425ba8fdf7f1cb23ffdb"
+      url: KOVAN_URL
     },
     ropsten:{
-      url:"https://ropsten.infura.io/v3/433a74c66045425ba8fdf7f1cb23ffdb"
+      url: ROPSTEN_URL
     }
   },
   paths: {

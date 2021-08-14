@@ -20,5 +20,9 @@
   },
   "browserslist": [
     "> 5%"
-  ]
+  ],
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "mongodb": "^4.1.0"
+  }
 }

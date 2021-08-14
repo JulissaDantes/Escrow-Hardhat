@@ -5,10 +5,16 @@ import "./index.scss";
 
 let contracts = 0;
 async function newContract() {
-  console.log('we hea');
+
   const beneficiary = document.getElementById("beneficiary").value;
   const arbiter = document.getElementById("arbiter").value;
-  const value = ethers.BigNumber.from(document.getElementById("wei").value);
+  const unit = document.getElementById("ddlamount").value;
+  console.log('we here',unit);
+  let value = ethers.BigNumber.from(document.getElementById("wei").value);
+  if(unit !== "wei"){    
+    value = ethers.utils.parseUnits(value.toString(), unit);
+  }
+  
   const contract = await deploy(arbiter, beneficiary, value);
   addContract(++contracts, contract, arbiter, beneficiary, value);
 }

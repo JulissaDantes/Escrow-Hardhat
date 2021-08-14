@@ -29508,11 +29508,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 let contracts = 0;
 
 async function newContract() {
-  console.log('we hea');
   const beneficiary = document.getElementById("beneficiary").value;
   const arbiter = document.getElementById("arbiter").value;
+  const unit = document.getElementById("ddlamount").value;
+  console.log('we here', unit);
 
-  const value = _ethers.ethers.BigNumber.from(document.getElementById("wei").value);
+  let value = _ethers.ethers.BigNumber.from(document.getElementById("wei").value);
+
+  if (unit !== "wei") {
+    value = _ethers.ethers.utils.parseUnits(value.toString(), unit);
+  }
 
   const contract = await (0, _deploy.default)(arbiter, beneficiary, value);
   (0, _addContract.default)(++contracts, contract, arbiter, beneficiary, value);

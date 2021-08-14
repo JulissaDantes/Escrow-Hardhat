@@ -45,6 +45,15 @@ input[type="text"] {
   font-size: 18px;
 }
 
+select{
+  padding: 6px;
+  margin-top: 20px;
+}
+
+td {
+  align-items: inherit;
+}
+
 .button {
   background-color: cadetblue;
   color: white;

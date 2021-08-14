@@ -17,11 +17,23 @@
           Beneficiary Address
           <input type="text" id="beneficiary">
         </label>
-  
-        <label>
-          Deposit Amount (in Wei)
-          <input type="text" id="wei">
-        </label>
+        <table>
+          <tr>
+            <td>
+              <label>
+                Deposit Amount
+                <input type="text" id="wei" for="ddlamount">
+              </label>
+            </td>
+            <td>
+              <select name="amountUnit" id="ddlamount">
+                <option value="ether">Ether</option>
+                <option value="wei">Wei</option>
+                <option value="gwei">Gwei</option>
+              </select>
+            </td>
+          </tr>
+        </table>
   
         <div class="button" id="deploy">
           Deploy

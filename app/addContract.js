@@ -12,13 +12,13 @@ export default async function addContract(id, contract, arbiter, beneficiary, va
 
   const container = document.getElementById("container");
   container.innerHTML += createHTML(buttonId, arbiter, beneficiary, value);
-
-  contract.on('Approved', () => {
-    document.getElementById(buttonId).className = "complete";
-    document.getElementById(buttonId).innerText = "✓ It's been approved!";
      // create a document to be inserted
      const doc = { address: contract.address, arbiter: arbiter, beneficiary: beneficiary, value: value};
      const result = await contractsCollections.insertOne(doc);
+  contract.on('Approved', () => {
+    document.getElementById(buttonId).className = "complete";
+    document.getElementById(buttonId).innerText = "✓ It's been approved!";
+
   });
 
   document.getElementById(buttonId).addEventListener("click", async () => {

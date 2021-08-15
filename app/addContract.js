@@ -1,5 +1,5 @@
-require('dotenv').config();
 import {ethers} from 'ethers';
+import persistData from './persistData'
 
 const provider = new ethers.providers.Web3Provider(ethereum);
 
@@ -9,7 +9,7 @@ export default async function addContract(id, contract, arbiter, beneficiary, va
 
   const container = document.getElementById("container");
   container.innerHTML += createHTML(buttonId, arbiter, beneficiary, value);
-
+  persistData(id, contract, arbiter, beneficiary, value, false);
   contract.on('Approved', () => {
     document.getElementById(buttonId).className = "complete";
     document.getElementById(buttonId).innerText = "✓ It's been approved!";

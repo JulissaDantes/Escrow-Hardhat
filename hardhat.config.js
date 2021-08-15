@@ -10,13 +10,13 @@ module.exports = {
       url: "HTTP://127.0.0.1:7545"
     },
     rinkeby: {
-      url: RINKEBY_URL
+      url: process.env.RINKEBY_URL
     },
     kovan: {
-      url: KOVAN_URL
+      url: process.env.KOVAN_URL
     },
     ropsten:{
-      url: ROPSTEN_URL
+      url: process.env.ROPSTEN_URL
     }
   },
   paths: {

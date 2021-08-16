@@ -8,6 +8,96 @@ const client = new MongoClient(uri);
 async function persistData(contract, arbiter, beneficiary, value, status) {  
     let buttonId;
     let html;
+    const interface = [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_arbiter",
+            "type": "address"
+          },
+          {
+            "internalType": "address payable",
+            "name": "_beneficiary",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "Approved",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "approve",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "arbiter",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "beneficiary",
+        "outputs": [
+          {
+            "internalType": "address payable",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "depositor",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "isApproved",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ];
     try{
         await client.connect();        
         const database = await client.db('ApprovedContracts');        
@@ -19,7 +109,7 @@ async function persistData(contract, arbiter, beneficiary, value, status) {
           console.log('status result',result);
         }else{
           value = parseInt(value.hex.toString(16),16);
-          const doc = { address: contract, arbiter: arbiter, beneficiary: beneficiary, value: value, status:status};
+          const doc = { address: contract, abi:interface , arbiter: arbiter, beneficiary: beneficiary, value: value, status:status};
           const result = await contractsCollections.insertOne(doc);        
           buttonId = result.insertedId.toHexString();            
           html =  createHTML(buttonId, arbiter, beneficiary, value);  
@@ -81,7 +171,8 @@ async function persistData(contract, arbiter, beneficiary, value, status) {
   }
   async function historicHTML(){
 
-    let html;
+    let html = ``;
+    let buttodId = []
     //pull all data
     try{
         await client.connect();        
@@ -94,8 +185,8 @@ async function persistData(contract, arbiter, beneficiary, value, status) {
               html += createpastHTML(contractItem._id.toHexString(), contractItem.arbiter, contractItem.beneficiary, contractItem.value)
             }else{
               html += createHTML(contractItem._id.toHexString(), contractItem.arbiter, contractItem.beneficiary, contractItem.value)
-            }
-             
+              buttodId.push({id:contractItem._id.toHexString(), contract: contractItem.address, interface: contractItem.abi})
+            }            
           }
         );
     }catch(err){
@@ -103,7 +194,7 @@ async function persistData(contract, arbiter, beneficiary, value, status) {
     }finally{
         await client.close();
     }
-      return {html:html};
+      return {html:html, buttonIds: buttodId};
   }
   
   module.exports = { persistData,historicHTML };

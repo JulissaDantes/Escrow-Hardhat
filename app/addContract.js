@@ -11,12 +11,19 @@ fetch(request, { headers: { 'Content-Type': 'application/json' }})
 .then((response) => response.json()) 
   .then((response) => {
     container.innerHTML += response.result.html;
+    response.result.buttonIds.forEach(element => {
+      document.getElementById(element.id).addEventListener("click", async () => {
+        const contract = new ethers.Contract(element.contract, element.interface, provider);
+        const signer = provider.getSigner();        
+        await contract.connect(signer).approve();
+      });
+    });
   });
 
 export default async function addContract(id, contract, arbiter, beneficiary, value) {
 
   let buttonId;
-
+console.log('new contract',contract);
   const body = JSON.stringify({
     contract: contract.address, arbiter: arbiter, beneficiary: beneficiary, value:value, status:false
   });
@@ -36,7 +43,6 @@ export default async function addContract(id, contract, arbiter, beneficiary, va
   });
  
   contract.on('Approved', () => {
-
     document.getElementById(buttonId).className = "complete";
     document.getElementById(buttonId).innerText = "✓ It's been approved!";
   });

@@ -29396,10 +29396,18 @@ fetch(request, {
   }
 }).then(response => response.json()).then(response => {
   container.innerHTML += response.result.html;
+  response.result.buttonIds.forEach(element => {
+    document.getElementById(element.id).addEventListener("click", async () => {
+      const contract = new _ethers.ethers.Contract(element.contract, element.interface, provider);
+      const signer = provider.getSigner();
+      await contract.connect(signer).approve();
+    });
+  });
 });
 
 async function addContract(id, contract, arbiter, beneficiary, value) {
   let buttonId;
+  console.log('new contract', contract);
   const body = JSON.stringify({
     contract: contract.address,
     arbiter: arbiter,
@@ -29559,7 +29567,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64419" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56109" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

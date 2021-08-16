@@ -1,0 +1,122 @@
+body {
+  background-color: #eee;
+  font-family: "Muli", sans-serif;
+}
+
+.inner-body {
+  display: flex;
+}
+
+.contract, .existing-contracts {
+  margin: 20px;
+  width: 50%;
+  padding: 40px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-style: solid;
+  border-color: cadetblue;
+  border-radius: 16px;
+}
+
+h1 {
+  margin: 50px;
+  margin-left: 35%;
+  padding: 50px;
+  border-bottom: 1px solid #eee;
+}
+
+h2 {
+  margin: 50px;
+  margin-left: 15%;
+  padding: 5px;
+  border-bottom: 1px solid #eee;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  text-transform: uppercase;
+  color: #aaa;
+  margin: 20px;
+}
+
+input[type=text] {
+  padding: 6px;
+  font-size: 18px;
+}
+
+select {
+  padding: 6px;
+  margin-top: 20px;
+}
+
+td {
+  align-items: inherit;
+}
+
+footer {
+  position: relative;
+  left: 0;
+  bottom: 0;
+  background-color: #04AA6D;
+  text-align: center;
+  color: honeydew;
+}
+
+.button {
+  background-color: cadetblue;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 20px;
+  padding: 9px 25px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 16px;
+  border-color: #25494b;
+}
+
+.existing-contract ul {
+  padding: 10px;
+  margin: 20px;
+  background-color: #eee;
+}
+
+.existing-contract ul > li {
+  list-style: none;
+  display: flex;
+  margin: 10px;
+}
+
+.existing-contract ul > li > div {
+  margin: 0 5px;
+}
+
+.existing-contract ul > li > :first-child {
+  font-weight: bold;
+}
+
+.existing-contract .complete {
+  color: #5aa75a;
+  text-align: center;
+}
+
+.deploy-button {
+  align-items: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 16px;
+  border-color: cadetblue;
+}
+
+.deploy-button:hover {
+  background-color: cadetblue;
+  /* Green */
+  color: white;
+}
+
+/*# sourceMappingURL=/app.80ee2152.css.map */

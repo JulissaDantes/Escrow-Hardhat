@@ -10,12 +10,24 @@ const request = new Request(`${server}/`, { method: 'POST', initBody });
 fetch(request, { headers: { 'Content-Type': 'application/json' }})
 .then((response) => response.json()) 
   .then((response) => {
+    let contract;
     container.innerHTML += response.result.html;
     response.result.buttonIds.forEach(element => {
-      document.getElementById(element.id).addEventListener("click", async () => {
-        const contract = new ethers.Contract(element.contract, element.interface, provider);
+      contract = new ethers.Contract(element.contract, element.interface, provider);
+      document.getElementById(element.id).addEventListener("click", async () => {        
         const signer = provider.getSigner();        
         await contract.connect(signer).approve();
+      });
+
+      contract.on('Approved', () => {
+        document.getElementById(element.id).className = "complete";
+        document.getElementById(element.id).innerText = "✓ It's been approved!";
+        
+        const abody = JSON.stringify({contract: contract.address,  status:true});
+        console.log('this s what im oing to send',abody);
+        const arequest = new Request(`${server}/approve`, { method: 'POST', abody });
+        fetch(arequest, { headers: { 'Content-Type': 'application/json' }})
+        .then((response) => response.json());
       });
     });
   });
@@ -45,6 +57,10 @@ console.log('new contract',contract);
   contract.on('Approved', () => {
     document.getElementById(buttonId).className = "complete";
     document.getElementById(buttonId).innerText = "✓ It's been approved!";
+      //send /approve 
+      const approveRequest = new Request(`${server}/approve`, { method: 'POST', body });
+      fetch(approveRequest, { headers: { 'Content-Type': 'application/json' }})
+      .then((response) => response.json());
   });
 }
 

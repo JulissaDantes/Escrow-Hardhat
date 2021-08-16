@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const db = require('./db.js')
 const port = 3000;
 
 // We are using our packages here
@@ -17,13 +18,15 @@ app.get('/', (req, res)=>{
     res.send("Welcome to your server")
 })
 
-app.post('/deploy', (req, res) =>{
+app.post('/deploy',async  (req, res) =>{
     //add to db
+    await db.persistData(req.body.contract,req.body.arbiter,req.body.beneficiary,req.body.value,false);
     console.log(req.body) 
 })
 
-app.post('/approve', (req, res) =>{
+app.post('/approve', async (req, res) =>{
     //update db
+    await db.persistData(req.body.contract,req.body.arbiter,req.body.beneficiary,req.body.value,true);
     console.log(req.body) 
 })
 

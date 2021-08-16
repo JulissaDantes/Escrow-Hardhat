@@ -29381,14 +29381,14 @@ exports.default = addContract;
 
 var _ethers = require("ethers");
 
-const server = "http://localhost:3000"; //import persistData from './persistData'
-
+const server = "http://localhost:3000";
 const provider = new _ethers.ethers.providers.Web3Provider(ethereum);
 
 async function addContract(id, contract, arbiter, beneficiary, value) {
-  const buttonId = `approve-${id}`;
-  const container = document.getElementById("container");
-  container.innerHTML += createHTML(buttonId, arbiter, beneficiary, value);
+  //const buttonId = `approve-${id}`;
+  let buttonId;
+  const container = document.getElementById("container"); //container.innerHTML += createHTML(buttonId, arbiter, beneficiary, value);
+
   const body = JSON.stringify({
     contract: contract.address,
     arbiter: arbiter,
@@ -29405,9 +29405,14 @@ async function addContract(id, contract, arbiter, beneficiary, value) {
       'Content-Type': 'application/json'
     }
   }).then(response => {
+    console.log('response ', response);
     return response.json();
-  }).then(({}) => {
-    document.getElementById("balance").innerHTML = balance;
+  }).then(({
+    response
+  }) => {
+    console.log('response ', response);
+    buttonId = response.buttonId;
+    container.innerHTML += response.html;
   });
   contract.on('Approved', () => {
     document.getElementById(buttonId).className = "complete";

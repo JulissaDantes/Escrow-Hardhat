@@ -1,25 +1,28 @@
 import {ethers} from 'ethers';
 const server = "http://localhost:3000";
-//import persistData from './persistData'
 
 const provider = new ethers.providers.Web3Provider(ethereum);
 
 export default async function addContract(id, contract, arbiter, beneficiary, value) {
 
-  const buttonId = `approve-${id}`;
-
+  //const buttonId = `approve-${id}`;
+  let buttonId;
   const container = document.getElementById("container");
-  container.innerHTML += createHTML(buttonId, arbiter, beneficiary, value);
+  //container.innerHTML += createHTML(buttonId, arbiter, beneficiary, value);
 
   const body = JSON.stringify({
     contract: contract.address, arbiter: arbiter, beneficiary: beneficiary, value:value, status:false
   });
+
   const request = new Request(`${server}/deploy`, { method: 'POST', body });
 
   fetch(request, { headers: { 'Content-Type': 'application/json' }}).then(response => {
+    console.log('response ',response);
     return response.json();
-  }).then(({  }) => {
-    document.getElementById("balance").innerHTML = balance;
+  }).then(({ response }) => {
+    console.log('response ',response);
+    buttonId = response.buttonId;
+    container.innerHTML += response.html;
   });
 
   contract.on('Approved', () => {

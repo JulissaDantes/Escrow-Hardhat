@@ -27,6 +27,7 @@ app.post('/deploy',async  (req, res) =>{
 
 app.post('/approve', async (req, res) =>{
     //update db
+    console.log('abody for server',req.body);
     const result = await db.persistData(req.body.contract,req.body.arbiter,req.body.beneficiary,req.body.value,true);
     res.send({ result }); 
 })

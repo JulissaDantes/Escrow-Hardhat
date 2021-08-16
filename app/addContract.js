@@ -23,10 +23,11 @@ fetch(request, { headers: { 'Content-Type': 'application/json' }})
         document.getElementById(element.id).className = "complete";
         document.getElementById(element.id).innerText = "✓ It's been approved!";
         
-        const abody = JSON.stringify({contract: contract.address,  status:true});
-        console.log('this s what im oing to send',abody);
-        const arequest = new Request(`${server}/approve`, { method: 'POST', abody });
-        fetch(arequest, { headers: { 'Content-Type': 'application/json' }})
+        const abody = JSON.stringify({"contract": contract.address, "arbiter": contract.arbiter, "beneficiary": contract.beneficiary, "value":contract.value, "status":true});
+        
+        const approveRequest = new Request(`${server}/approve`, { method: 'POST', body:abody });
+        
+        fetch(approveRequest, { headers: { 'Content-Type': 'application/json' }})
         .then((response) => response.json());
       });
     });

@@ -29395,12 +29395,33 @@ fetch(request, {
     'Content-Type': 'application/json'
   }
 }).then(response => response.json()).then(response => {
+  let contract;
   container.innerHTML += response.result.html;
   response.result.buttonIds.forEach(element => {
+    contract = new _ethers.ethers.Contract(element.contract, element.interface, provider);
     document.getElementById(element.id).addEventListener("click", async () => {
-      const contract = new _ethers.ethers.Contract(element.contract, element.interface, provider);
       const signer = provider.getSigner();
       await contract.connect(signer).approve();
+    });
+    contract.on('Approved', () => {
+      document.getElementById(element.id).className = "complete";
+      document.getElementById(element.id).innerText = "✓ It's been approved!";
+      const abody = JSON.stringify({
+        "contract": contract.address,
+        "arbiter": contract.arbiter,
+        "beneficiary": contract.beneficiary,
+        "value": contract.value,
+        "status": true
+      });
+      const approveRequest = new Request(`${server}/approve`, {
+        method: 'POST',
+        body: abody
+      });
+      fetch(approveRequest, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(response => response.json());
     });
   });
 });
@@ -29433,7 +29454,17 @@ async function addContract(id, contract, arbiter, beneficiary, value) {
   });
   contract.on('Approved', () => {
     document.getElementById(buttonId).className = "complete";
-    document.getElementById(buttonId).innerText = "✓ It's been approved!";
+    document.getElementById(buttonId).innerText = "✓ It's been approved!"; //send /approve 
+
+    const approveRequest = new Request(`${server}/approve`, {
+      method: 'POST',
+      body
+    });
+    fetch(approveRequest, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => response.json());
   });
 }
 },{"ethers":"../node_modules/ethers/dist/ethers.umd.js"}],"../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
@@ -29567,7 +29598,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56109" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51866" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

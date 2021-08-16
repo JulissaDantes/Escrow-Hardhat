@@ -105,7 +105,8 @@ async function persistData(contract, arbiter, beneficiary, value, status) {
         // create a document to be inserted
         if(status){
           //filter by contract
-          const result = await contractsCollections.updateMany({ address : contract}, { $set: { status : true}});
+          console.log('my search param:',contract);
+          const result = await contractsCollections.updateOne({ address : contract}, { $set: { status : true}});
           console.log('status result',result);
         }else{
           value = parseInt(value.hex.toString(16),16);

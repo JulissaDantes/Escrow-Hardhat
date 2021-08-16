@@ -17,46 +17,26 @@ export default async function addContract(id, contract, arbiter, beneficiary, va
   const deployRequest = new Request(`${server}/deploy`, { method: 'POST', body });
 
   fetch(deployRequest, { headers: { 'Content-Type': 'application/json' }})
-  .then((response) => response.json()) //2
+  .then((response) => response.json()) 
   .then((response) => {
     buttonId = response.result.buttonId;
     container.innerHTML += response.result.html;
-    console.log('response ',response); //3
+    console.log('response button',response.result.buttonId,' and html: ',response.result.html); 
+    document.getElementById(buttonId).addEventListener("click", async () => {
+      const signer = provider.getSigner();
+      await contract.connect(signer).approve();
+    });
   });
  
   contract.on('Approved', () => {
+    body[status] = true;
     document.getElementById(buttonId).className = "complete";
     document.getElementById(buttonId).innerText = "✓ It's been approved!";
-    //send /approve and buttingid
+    //send /approve 
+    const approveRequest = new Request(`${server}/approve`, { method: 'POST', body });
+    fetch(approveRequest, { headers: { 'Content-Type': 'application/json' }})
+    .then((response) => response.json());
   });
-
-
-  document.getElementById(buttonId).addEventListener("click", async () => {
-    const signer = provider.getSigner();
-    await contract.connect(signer).approve();
-  });
+  console.log('btnid before eventlistener',buttonId);
 }
 
-function createHTML(buttonId, arbiter, beneficiary, value) {
-  return `
-    <div class="existing-contract">
-      <ul className="fields">
-        <li>
-          <div> Arbiter </div>
-          <div> ${arbiter} </div>
-        </li>
-        <li>
-          <div> Beneficiary </div>
-          <div> ${beneficiary} </div>
-        </li>
-        <li>
-          <div> Value </div>
-          <div> ${value} </div>
-        </li>
-        <div class="button" id="${buttonId}">
-          Approve
-        </div>
-      </ul>
-    </div>
-  `;
-}

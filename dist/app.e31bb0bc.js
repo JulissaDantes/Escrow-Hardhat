@@ -29404,44 +29404,31 @@ async function addContract(id, contract, arbiter, beneficiary, value) {
     headers: {
       'Content-Type': 'application/json'
     }
-  }).then(response => response.json()) //2
-  .then(response => {
+  }).then(response => response.json()).then(response => {
     buttonId = response.result.buttonId;
     container.innerHTML += response.result.html;
-    console.log('response ', response); //3
+    console.log('response button', response.result.buttonId, ' and html: ', response.result.html);
+    document.getElementById(buttonId).addEventListener("click", async () => {
+      const signer = provider.getSigner();
+      await contract.connect(signer).approve();
+    });
   });
   contract.on('Approved', () => {
+    body[status] = true;
     document.getElementById(buttonId).className = "complete";
-    document.getElementById(buttonId).innerText = "✓ It's been approved!"; //send /approve and buttingid
-  });
-  document.getElementById(buttonId).addEventListener("click", async () => {
-    const signer = provider.getSigner();
-    await contract.connect(signer).approve();
-  });
-}
+    document.getElementById(buttonId).innerText = "✓ It's been approved!"; //send /approve 
 
-function createHTML(buttonId, arbiter, beneficiary, value) {
-  return `
-    <div class="existing-contract">
-      <ul className="fields">
-        <li>
-          <div> Arbiter </div>
-          <div> ${arbiter} </div>
-        </li>
-        <li>
-          <div> Beneficiary </div>
-          <div> ${beneficiary} </div>
-        </li>
-        <li>
-          <div> Value </div>
-          <div> ${value} </div>
-        </li>
-        <div class="button" id="${buttonId}">
-          Approve
-        </div>
-      </ul>
-    </div>
-  `;
+    const approveRequest = new Request(`${server}/approve`, {
+      method: 'POST',
+      body
+    });
+    fetch(approveRequest, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => response.json());
+  });
+  console.log('btnid before eventlistener', buttonId);
 }
 },{"ethers":"../node_modules/ethers/dist/ethers.umd.js"}],"../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
@@ -29575,7 +29562,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61026" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51419" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

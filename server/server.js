@@ -20,14 +20,14 @@ app.get('/', (req, res)=>{
 
 app.post('/deploy',async  (req, res) =>{
     //add to db
-    await db.persistData(req.body.contract,req.body.arbiter,req.body.beneficiary,req.body.value,false);
-    console.log(req.body) 
+    const result = await db.persistData(req.body.contract,req.body.arbiter,req.body.beneficiary,req.body.value,false);    
+    res.send({ result }); 
 })
 
 app.post('/approve', async (req, res) =>{
     //update db
-    await db.persistData(req.body.contract,req.body.arbiter,req.body.beneficiary,req.body.value,true);
-    console.log(req.body) 
+    const result = await db.persistData(req.body.contract,req.body.arbiter,req.body.beneficiary,req.body.value,true);
+    res.send({ result }); 
 })
 
 app.listen(port, () => {

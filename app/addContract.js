@@ -14,22 +14,22 @@ export default async function addContract(id, contract, arbiter, beneficiary, va
     contract: contract.address, arbiter: arbiter, beneficiary: beneficiary, value:value, status:false
   });
 
-  const request = new Request(`${server}/deploy`, { method: 'POST', body });
+  const deployRequest = new Request(`${server}/deploy`, { method: 'POST', body });
 
-  fetch(request, { headers: { 'Content-Type': 'application/json' }}).then(response => {
-    console.log('response ',response);
-    return response.json();
-  }).then(({ response }) => {
-    console.log('response ',response);
-    buttonId = response.buttonId;
-    container.innerHTML += response.html;
+  fetch(deployRequest, { headers: { 'Content-Type': 'application/json' }})
+  .then((response) => response.json()) //2
+  .then((response) => {
+    buttonId = response.result.buttonId;
+    container.innerHTML += response.result.html;
+    console.log('response ',response); //3
   });
-
+ 
   contract.on('Approved', () => {
     document.getElementById(buttonId).className = "complete";
     document.getElementById(buttonId).innerText = "✓ It's been approved!";
-
+    //send /approve and buttingid
   });
+
 
   document.getElementById(buttonId).addEventListener("click", async () => {
     const signer = provider.getSigner();

@@ -14,11 +14,15 @@ async function persistData(contract, arbiter, beneficiary, value, status) {
         const database = await client.db('ApprovedContracts');        
         const contractsCollections = database.collection("contract");        
         // create a document to be inserted
-        const doc = { address: contract, arbiter: arbiter, beneficiary: beneficiary, value: value, status:status};
-        const result = await contractsCollections.insertOne(doc);
-        
-        buttonId = result.insertedId.toHexString();  
-        html =  createHTML(buttonId, arbiter, beneficiary, value);    
+        if(status){
+          //filter by contract
+          const result = contractsCollections.findOneAndUpdate({ "address" : contract}, { $set: { "status" : status}});
+        }else{
+          const doc = { address: contract, arbiter: arbiter, beneficiary: beneficiary, value: value, status:status};
+          const result = await contractsCollections.insertOne(doc);        
+          buttonId = result.insertedId.toHexString();            
+          html =  createHTML(buttonId, arbiter, beneficiary, value);  
+        }  
     }catch(err){
         console.log('Somthing went wrong', err)
     }finally{

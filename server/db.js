@@ -15,7 +15,6 @@ async function persistData(contract, arbiter, beneficiary, value, status) {
         // create a document to be inserted
         if(status){
           //filter by contract
-          console.log('find',contractsCollections.find(  { address: contract} ));
           const result = await contractsCollections.updateMany({ address : contract}, { $set: { status : true}});
           console.log('status result',result);
         }else{
@@ -81,7 +80,7 @@ async function persistData(contract, arbiter, beneficiary, value, status) {
     `;
   }
   async function historicHTML(){
-    let contracts;
+
     let html;
     //pull all data
     try{
@@ -91,8 +90,13 @@ async function persistData(contract, arbiter, beneficiary, value, status) {
         const cursor = await contractsCollections.find({}).toArray();//array of json docs
       
         cursor.forEach( (contractItem)=>{
+            if(contractItem.status){
               html += createpastHTML(contractItem._id.toHexString(), contractItem.arbiter, contractItem.beneficiary, contractItem.value)
+            }else{
+              html += createHTML(contractItem._id.toHexString(), contractItem.arbiter, contractItem.beneficiary, contractItem.value)
             }
+             
+          }
         );
     }catch(err){
         console.log('Something went wrong', err)
@@ -101,5 +105,5 @@ async function persistData(contract, arbiter, beneficiary, value, status) {
     }
       return {html:html};
   }
-
+  
   module.exports = { persistData,historicHTML };

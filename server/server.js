@@ -14,8 +14,9 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 app.use(cors())
 
 //You can use this to check if your server is working
-app.get('/', (req, res)=>{
-    res.send("Welcome to your server")
+app.post('/', async (req, res)=>{
+    const result = await db.historicHTML();    
+    res.send({ result }); 
 })
 
 app.post('/deploy',async  (req, res) =>{

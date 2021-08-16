@@ -29383,12 +29383,23 @@ var _ethers = require("ethers");
 
 const server = "http://localhost:3000";
 const provider = new _ethers.ethers.providers.Web3Provider(ethereum);
+const container = document.getElementById("container"); //Fills previous data
+
+const initBody = JSON.stringify({});
+const request = new Request(`${server}/`, {
+  method: 'POST',
+  initBody
+});
+fetch(request, {
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}).then(response => response.json()).then(response => {
+  container.innerHTML += response.result.html;
+});
 
 async function addContract(id, contract, arbiter, beneficiary, value) {
-  //const buttonId = `approve-${id}`;
   let buttonId;
-  const container = document.getElementById("container"); //container.innerHTML += createHTML(buttonId, arbiter, beneficiary, value);
-
   const body = JSON.stringify({
     contract: contract.address,
     arbiter: arbiter,
@@ -29407,28 +29418,15 @@ async function addContract(id, contract, arbiter, beneficiary, value) {
   }).then(response => response.json()).then(response => {
     buttonId = response.result.buttonId;
     container.innerHTML += response.result.html;
-    console.log('response button', response.result.buttonId, ' and html: ', response.result.html);
     document.getElementById(buttonId).addEventListener("click", async () => {
       const signer = provider.getSigner();
       await contract.connect(signer).approve();
     });
   });
   contract.on('Approved', () => {
-    body[status] = true;
     document.getElementById(buttonId).className = "complete";
-    document.getElementById(buttonId).innerText = "✓ It's been approved!"; //send /approve 
-
-    const approveRequest = new Request(`${server}/approve`, {
-      method: 'POST',
-      body
-    });
-    fetch(approveRequest, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(response => response.json());
+    document.getElementById(buttonId).innerText = "✓ It's been approved!";
   });
-  console.log('btnid before eventlistener', buttonId);
 }
 },{"ethers":"../node_modules/ethers/dist/ethers.umd.js"}],"../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
@@ -29521,7 +29519,6 @@ async function newContract() {
   const beneficiary = document.getElementById("beneficiary").value;
   const arbiter = document.getElementById("arbiter").value;
   const unit = document.getElementById("ddlamount").value;
-  console.log('we here', unit);
 
   let value = _ethers.ethers.BigNumber.from(document.getElementById("wei").value);
 
@@ -29562,7 +29559,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51419" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50448" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -9,7 +9,7 @@ async function newContract() {
   const beneficiary = document.getElementById("beneficiary").value;
   const arbiter = document.getElementById("arbiter").value;
   const unit = document.getElementById("ddlamount").value;
-  console.log('we here',unit);
+  
   let value = ethers.BigNumber.from(document.getElementById("wei").value);
   if(unit !== "wei"){    
     value = ethers.utils.parseUnits(value.toString(), unit);
